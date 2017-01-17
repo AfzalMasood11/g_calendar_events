@@ -1,0 +1,18 @@
+<ul>
+  <% @calendar_list.items.each do |calendar| %>
+      <li><%= calendar.summary %> (<%= calendar.id %>)</li>
+  <% end %>
+</ul>
+<h1>
+  Calendar Events
+</h1>
+<ul>
+  <% @event_list.items.each do |event| %>
+      <li><%= event.summary %> Created: <%= event.created%>, Start at: <%= event.start.date_time%>)</li>
+  <% end %>
+</ul>
+<div id="app_cal">
+  <%= calendar do |date| %>
+      <%= date.day %>
+  <% end %>
+</div>
