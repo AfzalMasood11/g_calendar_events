@@ -1,18 +1,23 @@
-<ul>
-  <% @calendar_list.items.each do |calendar| %>
-      <li><%= calendar.summary %> (<%= calendar.id %>)</li>
-  <% end %>
-</ul>
 <h1>
   Calendar Events
 </h1>
-<ul>
-  <% @event_list.items.each do |event| %>
-      <li><%= event.summary %> Created: <%= event.created%>, Start at: <%= event.start.date_time%>)</li>
-  <% end %>
-</ul>
+
 <div id="app_cal">
-  <%= calendar do |date| %>
+  <h2 id="month">
+    <%= link_to "<", date: @date.prev_month %>
+    <%= @date.strftime("%B %Y") %>
+    <%= link_to ">", date: @date.next_month %>
+  </h2>
+
+  <%= calendar @date do |date| %>
+
       <%= date.day %>
+      <% if @events[date.to_s] %>
+          <ul>
+            <% @events[date.to_s].each do |event| %>
+                <li><%= event%></li>
+            <% end %>
+          </ul>
+      <% end %>
   <% end %>
 </div>

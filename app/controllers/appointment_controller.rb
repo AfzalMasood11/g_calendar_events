@@ -1,4 +1,3 @@
-# require 'google_calendar_api'
 class AppointmentController < ApplicationController
   include Calendar
   def index
@@ -19,11 +18,8 @@ class AppointmentController < ApplicationController
       redirect_uri: callback_url,
       code: params[:code]
     })
-
     response = client.fetch_access_token!
-
     session[:authorization] = response
-
     redirect_to calendars_url
   end
 
@@ -31,15 +27,8 @@ class AppointmentController < ApplicationController
     client = init_calendar({
       token_credential_uri: 'https://accounts.google.com/o/oauth2/token'
     })
-
-    client.update!(session[:authorization])
-
-    service = Google::Apis::CalendarV3::CalendarService.new
-    service.authorization = client
-
-    @calendar_list = service.list_calendar_lists
-    @event_list = service.list_events(@calendar_list.items.first.id)
-
+    @events = get_events(client, session[:authorization])
+    @date = params[:date] ? Date.parse(params[:date]) : Date.today
   end
-  
+
 end
